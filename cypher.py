@@ -1,54 +1,51 @@
-### Apollo's Command Line Interface
-###
 from sys import exit
 
-# this is where you add the actions you want your program to have.
-# If you put words in these quotation marks, " ", it means those words are for humans.
-#   We call those "strings", like a "string of letters and spaces."
-#   The computer should not try to treat strings as code.
-#
-cypher = {
-    "a": "z",
-    "b": "y",
-    "c": "x",
-    # "d": "yell!",
-    # "e": "spit out chompy pillows",
-    # "f": "spit out eaten objects",
-    # "g": "break!",
-    # "h": "help!",
-    "x": "c",
-    "y": "b",
-    "z": "a",
-}
+alphabet        = "abcdefghijklmnopqrstuvwxyz"
+encode_alphabet = "mvxswdfguhjknbiolearycqztp"
+def encode(message):
+    encoded_message = ""
+    for letter in message:
+        # try to find letter in alphabet
+        number = alphabet.find(letter)
+        if number == -1:
+            # if the "number" is less than zero, that means we didn't find it. just return whatever the input message letter was
+            encoded_letter = letter
+        else: 
+            # 
+            encoded_letter = encode_alphabet[number]
+        encoded_message += encoded_letter
+    return encoded_message
 
-def use_cypher(m):
-    return m
+def decode(encoded_message):
+    decoded_message = ""
+    for letter in encoded_message:
+        position = encode_alphabet.find(letter)
+        if position == -1:
+            decoded_letter = letter
+        else:
+            decoded_letter = alphabet[position]
+        decoded_message += decoded_letter
+    return decoded_message
+
+
+def analyze(encoded_message):
+    frequency = {}
+    for letter in encoded_message:
+        count = frequency.get(letter, 0)
+        count = count + 1
+        frequency[letter] = count
+    for letter, count in frequency.items():
+        print(letter, ":", count)
 
 def main():
-    print ("hello!") 
-    message = input("Type your message:  ")
-    encoded_message = use_cypher(message)
-    print(encoded_message)
+    message = input("Type your message:  ") # message = "hi i am a baby!"
+    
+    encoded_message = encode(message)
+    print("original:", message)
+    print("encoded:  ", encoded_message)
+    print("decoded:  ", decode(encoded_message))
 
-    # while True: # this program will keep running until we tell it to stop
-    #     # collect commands from the user
-    #     if "help".startswith(command): # if the user typed the beginning of "help"
-    #         print(help_message())
-    #         continue # go on to the next loop
-    #     if "exit".startswith(command): # if the user typed the beginning of "exit"
-    #         end_program()
-
-    #     # look up action from list
-    #     action = commands.get(command)
-    #     if action:
-    #         # hooray! we found a command in the list!
-    #         print(action)
-    #     elif command:
-    #         # could not find any action for the given command
-    #         print("I don't know what \"" + command + "\" means.")
-    #     else:
-    #         # the user just clicked "return" probably and didn't type anything
-    #         print("Hey, please enter a command!")
+    analyze(encoded_message)
 
 if __name__ == "__main__":
     main()
